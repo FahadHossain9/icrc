@@ -1,0 +1,19 @@
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  -webkit-font-smoothing: antialiased;
+}
+
+body {
+  margin: 0;
+  background: #e8e8e8 url('/images/page_bg.jpg') repeat;
+  color: #222;
+}
+
+#root {
+  min-height: 100vh;
+}
