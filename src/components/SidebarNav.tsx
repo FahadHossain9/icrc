@@ -26,6 +26,7 @@ export function SidebarNav() {
       <ul id="verticalmenu">
         <li>
           <div className="sidebar-nav__banner menu">
+            <p className="sidebar-nav__title">Main Menu</p>
             <img src="/images/mn.gif" width={186} height={53} alt="" />
           </div>
         </li>

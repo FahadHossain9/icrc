@@ -2,6 +2,14 @@ import { NavLink, Outlet } from 'react-router-dom';
 import { SidebarNav } from './SidebarNav';
 import { Slideshow } from './Slideshow';
 
+function navTopClass({ isActive }: { isActive: boolean }) {
+  return isActive ? 'nav-top__link nav-top__link--active' : 'nav-top__link';
+}
+
+function navTopSubClass({ isActive }: { isActive: boolean }) {
+  return isActive ? 'nav-top__sublink is-active' : 'nav-top__sublink';
+}
+
 export function Layout() {
   return (
     <div className="icrc-shell">
@@ -24,44 +32,67 @@ export function Layout() {
       <nav className="icrc-topnav menu" aria-label="Primary">
         <ul>
           <li>
-            <NavLink to="/" end>
+            <NavLink to="/" end className={navTopClass}>
               Home
             </NavLink>
           </li>
           <li>
-            <NavLink to="/aboutus">About us</NavLink>
+            <NavLink to="/aboutus" className={navTopClass}>
+              About us
+            </NavLink>
           </li>
           <li>
             <span className="menu-placeholder">Message</span>
           </li>
           <li>
-            <NavLink to="/ourteam">Our Team</NavLink>
+            <NavLink to="/ourteam" className={navTopClass}>
+              Our Team
+            </NavLink>
             <ul>
               <li>
-                <NavLink to="/chiefconsultant">Chief Consultant</NavLink>
+                <NavLink to="/chiefconsultant" className={navTopSubClass}>
+                  Chief Consultant
+                </NavLink>
               </li>
               <li>
-                <NavLink to="/consultant">Consultant</NavLink>
+                <NavLink to="/consultant" className={navTopSubClass}>
+                  Consultant
+                </NavLink>
               </li>
               <li>
-                <NavLink to="/chiefmbryologist">Chief Embryologist</NavLink>
+                <NavLink to="/chiefmbryologist" className={navTopSubClass}>
+                  Chief Embryologist
+                </NavLink>
               </li>
               <li>
-                <NavLink to="/embyologist">Embryologist</NavLink>
+                <NavLink to="/embyologist" className={navTopSubClass}>
+                  Embryologist
+                </NavLink>
               </li>
               <li>
-                <NavLink to="/mofficer">Medical Officer</NavLink>
+                <NavLink to="/mofficer" className={navTopSubClass}>
+                  Medical Officer
+                </NavLink>
               </li>
               <li>
-                <NavLink to="/altechnician">ART Lab Technician</NavLink>
+                <NavLink to="/altechnician" className={navTopSubClass}>
+                  ART Lab Technician
+                </NavLink>
               </li>
             </ul>
           </li>
           <li>
-            <NavLink to="/contactus">Contact</NavLink>
+            <NavLink to="/contactus" className={navTopClass}>
+              Contact
+            </NavLink>
           </li>
           <li>
-            <NavLink to="/scope" className="scope-link">
+            <NavLink
+              to="/scope"
+              className={({ isActive }) =>
+                isActive ? 'nav-top__link nav-top__link--scope-active' : 'nav-top__link'
+              }
+            >
               Project scope
             </NavLink>
           </li>

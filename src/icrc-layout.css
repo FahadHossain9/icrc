@@ -34,6 +34,7 @@
   margin: 0.35rem 0 0;
   font-family: Verdana, Geneva, sans-serif;
   font-size: 0.85rem;
+  font-style: italic;
   color: #339900;
   letter-spacing: 0.02em;
 }
@@ -69,20 +70,65 @@
   opacity: 1;
 }
 
-.icrc-topnav.menu ul {
+/* Top nav: override legacy .menu floats so all items stay on one bar; dropdown anchored under parent */
+.icrc-topnav.menu {
+  position: relative;
+  z-index: 200;
+  background: url('/images/menu-bg.gif') repeat-x top left;
+  min-height: 43px;
+  isolation: isolate;
+}
+
+.icrc-topnav.menu > ul {
   display: flex;
-  flex-wrap: wrap;
+  flex-direction: row;
+  flex-wrap: nowrap;
   align-items: stretch;
   height: auto;
   min-height: 43px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  background: transparent;
+  overflow-x: auto;
+  overflow-y: visible;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: thin;
 }
 
-.icrc-topnav.menu li {
+.icrc-topnav.menu > ul > li {
+  float: none;
+  flex: 0 0 auto;
   position: relative;
+  padding: 0;
 }
 
-.icrc-topnav.menu li:hover > ul {
+.icrc-topnav.menu li > ul {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: auto;
+  width: min(240px, calc(100vw - 1.5rem));
+  margin: 0;
+  padding: 0;
+  display: none;
+  height: auto;
+  background: #e0e0e0;
+  border: 2px solid #a80329;
+  border-top: 0;
+  z-index: 400;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.18);
+}
+
+.icrc-topnav.menu li:hover > ul,
+.icrc-topnav.menu li:focus-within > ul {
   display: block;
+}
+
+.icrc-topnav.menu li li {
+  float: none;
+  width: 100%;
+  padding: 0;
 }
 
 .menu-placeholder {
@@ -92,20 +138,53 @@
   padding: 0 25px;
   color: #666;
   cursor: default;
+  white-space: nowrap;
 }
 
-.scope-link {
+.icrc-topnav.menu .nav-top__link {
+  box-sizing: border-box;
+}
+
+.icrc-topnav.menu > ul > li > a.nav-top__link--active {
+  background: url('/images/current-bg.gif') repeat-x top left;
+  color: #fff !important;
+}
+
+.icrc-topnav.menu > ul > li > a.nav-top__link--scope-active {
   background: #073b84;
   color: #fff !important;
 }
 
-.scope-link:hover {
-  color: #ffcccc !important;
+.icrc-topnav.menu > ul > li > a.nav-top__link--scope-active:hover {
+  color: #ffdede !important;
+}
+
+.icrc-topnav.menu li ul a.nav-top__sublink.is-active {
+  background: #949494;
+  color: #000 !important;
+}
+
+@media (max-width: 720px) {
+  .icrc-topnav.menu > ul {
+    flex-wrap: wrap;
+    overflow-x: visible;
+  }
+
+  .icrc-topnav.menu > ul > li {
+    flex: 1 1 auto;
+    min-width: max-content;
+  }
+
+  .icrc-topnav.menu li > ul {
+    left: 0;
+    width: 100%;
+    max-width: 280px;
+  }
 }
 
 .icrc-body {
   display: grid;
-  grid-template-columns: 200px 1fr;
+  grid-template-columns: minmax(180px, 220px) 1fr;
   gap: 0;
   flex: 1;
   align-items: start;
@@ -119,6 +198,13 @@
   .icrc-sidebar {
     border-right: none;
     border-bottom: 1px solid #ddd;
+    max-width: none;
+  }
+
+  .sidebar-nav .glossymenu li > ul {
+    left: auto;
+    right: 0;
+    max-width: min(240px, 85vw);
   }
 }
 
@@ -126,12 +212,22 @@
   background: #fff;
   border-right: 1px solid #ddd;
   padding: 0.5rem 0.5rem 1rem;
+  width: 100%;
+  max-width: 220px;
+  box-sizing: border-box;
 }
 
 .sidebar-nav ul {
   list-style: none;
   margin: 0;
   padding: 0;
+}
+
+.sidebar-nav .glossymenu,
+.sidebar-nav .glossymenu li ul {
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
 }
 
 .sidebar-nav .glossymenu li {
@@ -150,13 +246,16 @@
   min-width: 190px;
 }
 
-.sidebar-nav .glossymenu li:hover > ul {
+.sidebar-nav .glossymenu li:hover > ul,
+.sidebar-nav .glossymenu li:focus-within > ul {
   display: block;
 }
 
 .sidebar-nav a {
   display: block;
-  padding: 6px 10px;
+  width: 100%;
+  box-sizing: border-box;
+  padding: 8px 10px;
   text-decoration: none;
   color: #fff;
   font: bold 12px Verdana, Helvetica, sans-serif;
@@ -181,6 +280,23 @@
 .sidebar-nav__banner {
   text-align: center;
   padding: 4px 0;
+}
+
+.sidebar-nav__title {
+  margin: 0 0 6px;
+  font: bold 12px Verdana, Helvetica, sans-serif;
+  color: #333;
+}
+
+/* Stripe top-level sidebar rows (after banner), similar to reference */
+.sidebar-nav #verticalmenu > li:nth-child(n + 2):nth-child(even) > a,
+.sidebar-nav #verticalmenu > li:nth-child(n + 2):nth-child(even) > .sidebar-nav__nolink {
+  filter: brightness(0.96);
+}
+
+.sidebar-nav #verticalmenu > li:nth-child(n + 2):nth-child(even) > a.is-active,
+.sidebar-nav #verticalmenu > li:nth-child(n + 2):nth-child(even) > a:hover {
+  filter: none;
 }
 
 .news-panel {

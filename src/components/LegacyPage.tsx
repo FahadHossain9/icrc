@@ -11,6 +11,19 @@ function extractBody(html: string): string {
   return m ? m[1] : html;
 }
 
+/** Legacy pages use relative asset paths; in the SPA they must be rooted under /legacy-html or /images. */
+function rewriteLegacyAssetRefs(html: string): string {
+  return html.replace(/\b(src|href)="([^"]+)"/gi, (full, attr: string, val: string) => {
+    const v = val.trim();
+    if (!v || v.startsWith('#') || /^https?:\/\//i.test(v) || v.startsWith('mailto:')) return full;
+    if (v.startsWith('/')) return full;
+    if (v.startsWith('images/')) return `${attr}="/${v}"`;
+    if (/\.html?$/i.test(v)) return full;
+    const clean = v.replace(/^\.\//, '');
+    return `${attr}="/legacy-html/${clean}"`;
+  });
+}
+
 const legacySlugSet = new Set<string>(legacySlugs);
 
 type Props = {
@@ -46,7 +59,9 @@ export function LegacyPage({ slug: slugOverride }: Props) {
         const buf = await res.arrayBuffer();
         const dec = new TextDecoder('windows-1252');
         const raw = dec.decode(buf);
-        if (!cancelled) setHtml(stripBottompartTarget(extractBody(raw)));
+        if (!cancelled) {
+          setHtml(rewriteLegacyAssetRefs(stripBottompartTarget(extractBody(raw))));
+        }
       } catch {
         if (!cancelled) setLoadError('Could not load this page.');
       }
