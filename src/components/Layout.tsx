@@ -44,11 +44,11 @@ export function Layout() {
           <li>
             <span className="menu-placeholder">Message</span>
           </li>
-          <li>
-            <NavLink to="/ourteam" className={navTopClass}>
+          <li className="nav-top__item--dropdown">
+            <NavLink to="/ourteam" className={navTopClass} aria-haspopup="true">
               Our Team
             </NavLink>
-            <ul>
+            <ul aria-label="Our Team submenu">
               <li>
                 <NavLink to="/chiefconsultant" className={navTopSubClass}>
                   Chief Consultant
